@@ -1,6 +1,6 @@
-# Nginx PHP MySQL [![Build Status](https://travis-ci.org/nanoninja/docker-nginx-php-mysql.svg?branch=master)](https://travis-ci.org/nanoninja/docker-nginx-php-mysql) [![GitHub version](https://badge.fury.io/gh/nanoninja%2Fdocker-nginx-php-mysql.svg)](https://badge.fury.io/gh/nanoninja%2Fdocker-nginx-php-mysql)
+# Nginx PHP MySQL 
 
-Docker running Nginx, PHP-FPM, Composer, MySQL and PHPMyAdmin.
+Docker running Nginx, PHP-FPM and mariadb
 
 ## Overview
 
@@ -75,10 +75,8 @@ sudo apt install build-essential
 ### Images to use
 
 * [Nginx](https://hub.docker.com/_/nginx/)
-* [MySQL](https://hub.docker.com/_/mysql/)
-* [PHP-FPM](https://hub.docker.com/r/nanoninja/php-fpm/)
-* [Composer](https://hub.docker.com/_/composer/)
-* [PHPMyAdmin](https://hub.docker.com/r/phpmyadmin/phpmyadmin/)
+* [Mariadb](https://hub.docker.com/_/mariadb)
+* [PHP-FPM](https://hub.docker.com/_/php)
 * [Generate Certificate](https://hub.docker.com/r/jacoelho/generate-certificate/)
 
 You should be careful when installing third party web servers such as MySQL or Nginx.
@@ -88,8 +86,7 @@ This project use the following ports :
 | Server     | Port |
 |------------|------|
 | MySQL      | 8989 |
-| PHPMyAdmin | 8080 |
-| Nginx      | 8000 |
+| Nginx      | 8080 |
 | Nginx SSL  | 3000 |
 
 ___
@@ -99,45 +96,13 @@ ___
 To install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), download it and install following the instructions :
 
 ```sh
-git clone https://github.com/nanoninja/docker-nginx-php-mysql.git
+git clone https://github.com/Timon-Schneider/docker-nginx-php-mysql.git
 ```
 
 Go to the project directory :
 
 ```sh
 cd docker-nginx-php-mysql
-```
-
-### Project tree
-
-```sh
-.
-├── Makefile
-├── README.md
-├── data
-│   └── db
-│       ├── dumps
-│       └── mysql
-├── doc
-├── docker-compose.yml
-├── etc
-│   ├── nginx
-│   │   ├── default.conf
-│   │   └── default.template.conf
-│   ├── php
-│   │   └── php.ini
-│   └── ssl
-└── web
-    ├── app
-    │   ├── composer.json.dist
-    │   ├── phpunit.xml.dist
-    │   ├── src
-    │   │   └── Foo.php
-    │   └── test
-    │       ├── FooTest.php
-    │       └── bootstrap.php
-    └── public
-        └── index.php
 ```
 
 ___
@@ -176,7 +141,7 @@ ___
 
 If you use another IDE than [PHPStorm](https://www.jetbrains.com/phpstorm/) or [Netbeans](https://netbeans.org/), go to the [remote debugging](https://xdebug.org/docs/remote) section of Xdebug documentation.
 
-For a better integration of Docker to PHPStorm, use the [documentation](https://github.com/nanoninja/docker-nginx-php-mysql/blob/master/doc/phpstorm-macosx.md).
+For a better integration of Docker to PHPStorm, use the [documentation](https://github.com/Timon-Schneider/docker-nginx-php-mysql/blob/master/doc/phpstorm-macosx.md).
 
 1. Get your own local IP address :
 
@@ -184,7 +149,7 @@ For a better integration of Docker to PHPStorm, use the [documentation](https://
     sudo ifconfig
     ```
 
-2. Edit php file `etc/php/php.ini` and comment or uncomment the configuration as needed.
+2. Edit php file `etc/php/docker-php.ini` and comment or uncomment the configuration as needed.
 
 3. Set the `remote_host` parameter with your IP :
 
@@ -195,13 +160,7 @@ ___
 
 ## Run the application
 
-1. Copying the composer configuration file : 
-
-    ```sh
-    cp web/app/composer.json.dist web/app/composer.json
-    ```
-
-2. Start the application :
+1. Start the application :
 
     ```sh
     docker-compose up -d
@@ -213,13 +172,12 @@ ___
     docker-compose logs -f # Follow log output
     ```
 
-3. Open your favorite browser :
+2. Open your favorite browser :
 
-    * [http://localhost:8000](http://localhost:8000/)
+    * [http://localhost:8080](http://localhost:8000/)
     * [https://localhost:3000](https://localhost:3000/) ([HTTPS](#configure-nginx-with-ssl-certificates) not configured by default)
-    * [http://localhost:8080](http://localhost:8080/) PHPMyAdmin (username: dev, password: dev)
 
-4. Stop and clear services
+3. Stop and clear services
 
     ```sh
     docker-compose down -v
@@ -266,15 +224,11 @@ ___
 
 ### Installing package with composer
 
-```sh
-docker run --rm -v $(pwd)/web/app:/app composer require symfony/yaml
-```
+Edit Dockerfile `php.Dockerfile` and comment or uncomment the configuration as needed.
 
 ### Updating PHP dependencies with composer
 
-```sh
-docker run --rm -v $(pwd)/web/app:/app composer update
-```
+Edit Dockerfile `php.Dockerfile` and comment or uncomment the configuration as needed.
 
 ### Generating PHP API documentation
 
