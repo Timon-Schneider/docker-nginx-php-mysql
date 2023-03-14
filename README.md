@@ -50,10 +50,10 @@ All requisites should be available for your distribution. The most important are
 * [Docker](https://docs.docker.com/engine/installation/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
-Check if `docker-compose` is already installed by entering the following command : 
+Check if `docker compose` is already installed by entering the following command : 
 
 ```sh
-which docker-compose
+which docker compose
 ```
 
 Check Docker Compose compatibility :
@@ -163,13 +163,13 @@ ___
 1. Start the application :
 
     ```sh
-    docker-compose up -d
+    docker compose up -d
     ```
 
     **Please wait this might take a several minutes...**
 
     ```sh
-    docker-compose logs -f # Follow log output
+    docker compose logs -f # Follow log output
     ```
 
 2. Open your favorite browser :
@@ -180,7 +180,7 @@ ___
 3. Stop and clear services
 
     ```sh
-    docker-compose down -v
+    docker compose down -v
     ```
 
 ___
@@ -239,31 +239,31 @@ docker run --rm -v $(pwd):/data phpdoc/phpdoc -i=vendor/ -d /data/web/app/src -t
 ### Testing PHP application with PHPUnit
 
 ```sh
-docker-compose exec -T php ./app/vendor/bin/phpunit --colors=always --configuration ./app
+docker compose exec -T php ./app/vendor/bin/phpunit --colors=always --configuration ./app
 ```
 
 ### Fixing standard code with [PSR2](http://www.php-fig.org/psr/psr-2/)
 
 ```sh
-docker-compose exec -T php ./app/vendor/bin/phpcbf -v --standard=PSR2 ./app/src
+docker compose exec -T php ./app/vendor/bin/phpcbf -v --standard=PSR2 ./app/src
 ```
 
 ### Checking the standard code with [PSR2](http://www.php-fig.org/psr/psr-2/)
 
 ```sh
-docker-compose exec -T php ./app/vendor/bin/phpcs -v --standard=PSR2 ./app/src
+docker compose exec -T php ./app/vendor/bin/phpcs -v --standard=PSR2 ./app/src
 ```
 
 ### Analyzing source code with [PHP Mess Detector](https://phpmd.org/)
 
 ```sh
-docker-compose exec -T php ./app/vendor/bin/phpmd ./app/src text cleancode,codesize,controversial,design,naming,unusedcode
+docker compose exec -T php ./app/vendor/bin/phpmd ./app/src text cleancode,codesize,controversial,design,naming,unusedcode
 ```
 
 ### Checking installed PHP extensions
 
 ```sh
-docker-compose exec php php -m
+docker compose exec php php -m
 ```
 
 ### Handling database
@@ -271,7 +271,7 @@ docker-compose exec php php -m
 #### MySQL shell access
 
 ```sh
-docker exec -it mysql bash
+docker exec -it database bash
 ```
 
 and
@@ -287,13 +287,13 @@ mkdir -p data/db/dumps
 ```
 
 ```sh
-source .env && docker exec $(docker-compose ps -q mysqldb) mysqldump --all-databases -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" > "data/db/dumps/db.sql"
+source .env && docker exec $(docker compose ps -q mysqldb) mysqldump --all-databases -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" > "data/db/dumps/db.sql"
 ```
 
 #### Restoring a backup of all databases
 
 ```sh
-source .env && docker exec -i $(docker-compose ps -q mysqldb) mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" < "data/db/dumps/db.sql"
+source .env && docker exec -i $(docker compose ps -q mysqldb) mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" < "data/db/dumps/db.sql"
 ```
 
 #### Creating a backup of single database
@@ -301,13 +301,13 @@ source .env && docker exec -i $(docker-compose ps -q mysqldb) mysql -u"$MYSQL_RO
 **`Notice:`** Replace "YOUR_DB_NAME" by your custom name.
 
 ```sh
-source .env && docker exec $(docker-compose ps -q mysqldb) mysqldump -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" --databases YOUR_DB_NAME > "data/db/dumps/YOUR_DB_NAME_dump.sql"
+source .env && docker exec $(docker compose ps -q mysqldb) mysqldump -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" --databases YOUR_DB_NAME > "data/db/dumps/YOUR_DB_NAME_dump.sql"
 ```
 
 #### Restoring a backup of single database
 
 ```sh
-source .env && docker exec -i $(docker-compose ps -q mysqldb) mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" < "data/db/dumps/YOUR_DB_NAME_dump.sql"
+source .env && docker exec -i $(docker compose ps -q mysqldb) mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" < "data/db/dumps/YOUR_DB_NAME_dump.sql"
 ```
 
 
