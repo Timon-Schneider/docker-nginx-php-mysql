@@ -23,9 +23,6 @@ help:
 	@echo "  phpmd               Analyse the API with PHP Mess Detector"
 	@echo "  test                Test application"
 
-init:
-	@$(shell cp -n $(shell pwd)/web/app/composer.json.dist $(shell pwd)/web/app/composer.json 2> /dev/null)
-
 apidoc:
 	@docker run --rm -v $(shell pwd):/data phpdoc/phpdoc -i=vendor/ -d /data/web/app/src -t /data/web/app/doc
 	@make resetOwner
@@ -46,7 +43,7 @@ code-sniff:
 composer-up:
 	@docker run --rm -v $(shell pwd)/web/app:/app composer update
 
-docker-start: init
+docker-start:
 	docker-compose up -d
 
 docker-stop:
@@ -79,4 +76,4 @@ test: code-sniff
 resetOwner:
 	@$(shell chown -Rf $(SUDO_USER):$(shell id -g -n $(SUDO_USER)) $(MYSQL_DUMPS_DIR) "$(shell pwd)/etc/ssl" "$(shell pwd)/web/app" 2> /dev/null)
 
-.PHONY: clean test code-sniff init
+.PHONY: clean test code-sniff
